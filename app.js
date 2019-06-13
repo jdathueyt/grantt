@@ -87,26 +87,35 @@ const event = [
 ];
 let monthD = 0;
 let dayR = 0;
-for (var day=1; day < days+1; day++) {
+
+// Initialise les jours et les mois
+
+$( "#dateMois" ).append(`<TD COLSPAN=${months[0]}> ${monthsD[0]}</TD>`); // Init mois de Janvier
+for (let day=1; day < days+1; day++) {
+    dayR++;
+    if (dayR > months[monthD]){
+        monthD += 1;
+        dayR = 1;
+        $( "#dateMois" ).append(`<TD COLSPAN=${months[monthD]}> ${monthsD[monthD]}</TD>`);
+    }
+    $( "#date" ).append(`<TD>${dayR < 10 ? '0'+dayR : dayR }</TD>`);
+}
+
+
+// Initialise les mois
+/*
+for (let mn=0; mn < monthsD.length; mn++) {
+    console.log("oki");
     dayR++;
     if (dayR > months[monthD]){
         monthD += 1;
         dayR = 1;
     }
-    $( "#date" ).append(`<TD>${dayR < 10 ? '0'+dayR : dayR }</TD>`);
+   $( "#dateMois" ).append(`<TD COLSPAN=${months[mn]}> ${monthsD[mn]}</TD>`);
 }
-
-for (var mn=0; mn < monthsD; mn++) {
-    dayR++;
-    if (dayR > months[monthD]){
-        monthD += 1;
-        dayR = 1;
-    }
-    $( "#date" ).append(`<TD>${dayR < 10 ? '0'+dayR : dayR }</TD>`);
-}
-
+*/
 function addEtape(tabIndex, etapeIndex) {
-    $('#tab').append(`<TR id='objectif_${tabIndex}'><TD>${etapeIndex[0]}</TD></TR>`);
+    $('#tab').append(`<TR id='objectif_${tabIndex}'><TD  class="headcol" >${etapeIndex[0]}</TD></TR>`);
     isSet = false;
     for (var day=1; day < days+1; day++)
         if (convertDateToNumber(etapeIndex[1][0], etapeIndex[1][1]) > day || convertDateToNumber(etapeIndex[2][0], etapeIndex[2][1]) < day)
@@ -119,11 +128,12 @@ function addEtape(tabIndex, etapeIndex) {
 }
 
 function addObj(objID, name) {
-    $('#tab').append(`<TR id='objectif_${objID}'><TD>${name}</TD></TR>`);
+    $('#tab').append(`<TR id='objectif_${objID}'><TD class="headcol">${name}</TD><TD COLSPAN=${days}></TD></TR>`);
 }
 
 function initRow(month, tabIndex) {
-    $('#tab').append(`<TR id='addEtape_${tabIndex}'><TD style="background-color:#e6b13a;" id="newEtapeText"> <b>Ajouter une étape ... </b></TD></TR>`);
+    console.log("test" + month, tabIndex);
+    $('#tab').append(`<TR id='addEtape_${tabIndex}'><TD  class="headcol" style="background-color:#e6b13a;"  class="headcol" id="newEtapeText"> <b>Ajouter une étape ... </b></TD></TR>`);
     for (var day=1; day < days+1; day++)
             $( "#addEtape_"+tabIndex ).append(`<TD id="add_${day}" style='background-color:white;' onClick="markadd(${tabIndex}, ${day})"> + </TD>`);
 
